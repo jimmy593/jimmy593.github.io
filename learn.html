@@ -4,15 +4,580 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>教程</title>
+    <style>
+        .highlight {
+            background-color: #fff8e1;
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-weight: bold;
+            color: #d32f2f;
+        }
+        .sub-directory .sub-item {
+            color: #1976d2;
+            font-weight: bold;
+        }
+        .section h3 {
+            color: #388e3c;
+        }
+        #register {
+            background-color: #e3f2fd;
+            color: #0d47a1;
+        }
+        #create-repo {
+            background-color: #e8f5e9;
+            color: #1b5e20;
+        }
+        #create-webpage {
+            background-color: #fff3e0;
+            color: #e65100;
+        }
+        #publish {
+            background-color: #fce4ec;
+            color: #880e4f;
+        }
+        #custom-domain {
+            background-color: #f3e5f5;
+            color: #4a148c;
+        }
+        #add-content {
+            background-color: #e0f7fa;
+            color: #006064;
+        }
+        #collaborate {
+            background-color: #fffde7;
+            color: #f57f17;
+        }
+        .section {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .section p, .section li {
+            color: #000;
+        }
+    </style>
 </head>
 <body background="https://img.shetu66.com/2023/06/12/1686555071035599.png">
-    <h1>创建网站教程</h1>
-    <p>Creating a Website Tutorial</p>
+    <h1>GitHub网站创建教程</h1>
+    <div class="container">
+        <div class="directory" id="directory">
+            <h3>目录</h3>
+            <a href="#register">1. 注册GitHub账号</a>
+            <a href="#create-repo">2. 创建存储库</a>
+            <a href="#create-webpage">3. 制作网页</a>
+            <a href="#publish">4. 发布网站</a>
+            <a href="#custom-domain">5. 自定义域名</a>
+            <a href="#add-content">6. 添加内容</a>
+            <a href="#collaborate">7. 团队协作</a>
+            <div class="sub-directory">
+                <a href="#dns-setup" class="sub-item">5.1 DNS设置</a>
+                <a href="#ssl-cert" class="sub-item">5.2 SSL证书配置</a>
+                <a href="#blog-post" class="sub-item">6.1 添加博客文章</a>
+                <a href="#image-gallery" class="sub-item">6.2 创建图片画廊</a>
+                <a href="#add-collaborator" class="sub-item">7.1 添加协作者</a>
+                <a href="#pull-request" class="sub-item">7.2 处理拉取请求</a>
+                <a href="#issue-tracking" class="sub-item">7.3 问题跟踪</a>
+                <a href="#branch-management" class="sub-item">7.4 分支管理</a>
+                <a href="#merge-conflict" class="sub-item">7.5 解决合并冲突</a>
+                <a href="#project-board" class="sub-item">7.6 使用项目看板</a>
+            </div>
+        </div>
+        <div class="content">
+            <div id="register" class="section">
+                <h2>1. 注册GitHub账号</h2>
+                <p>首先，访问GitHub官网进行账号注册：</p>
+                
+                <ol>
+                    <li>打开浏览器，访问 <a href="https://github.com" target="_blank">https://github.com</a>。你可以使用常见的浏览器，如Chrome、Firefox或Edge。确保你的网络连接稳定，否则可能会出现加载缓慢或无法访问的情况。</li>
+                    <li>点击右上角的"Sign up"按钮，进入注册页面。如果该按钮没有响应，尝试刷新页面或者更换浏览器。</li>
+                    <li>输入用户名、电子邮件和密码。用户名需要唯一，并且要容易记忆，同时要符合GitHub的命名规则，不能包含特殊字符。电子邮件地址要确保有效，因为后续的验证和通知都会通过这个邮箱发送。密码要足够复杂，包含大小写字母、数字和特殊字符，以提高账号的安全性。</li>
+                    <li>完成验证步骤。GitHub可能会要求你输入验证码或者进行人机验证，按照提示操作即可。如果验证码无法显示，可以尝试点击刷新按钮获取新的验证码。</li>
+                    <li>按照提示完成注册流程。注册成功后，你会收到一封验证邮件，点击邮件中的链接完成邮箱验证，这样才能正常使用GitHub的全部功能。</li>
+                </ol>
+                
+                <h3>常见问题解答</h3>
+                <ul>
+                    <li><strong>Q: 注册时提示用户名已被占用怎么办？</strong><br>
+                    A: 尝试在用户名中添加数字或下划线，或者选择一个完全不同的用户名。GitHub用户名一旦注册就无法更改，所以请慎重选择。</li>
+                    
+                    <li><strong>Q: 没有收到验证邮件怎么办？</strong><br>
+                    A: 首先检查垃圾邮件文件夹，如果还是没有，可以点击"Resend verification email"重新发送。如果问题持续，可以尝试使用不同的邮箱地址注册。</li>
+                    
+                    <li><strong>Q: 注册时遇到"Something went wrong"错误怎么办？</strong><br>
+                    A: 这可能是临时服务器问题，建议等待几分钟后重试。如果问题持续，可以尝试清除浏览器缓存或使用隐身模式访问。</li>
+                </ul>
+                
+                <h3>实用技巧</h3>
+                <ul>
+                    <li>建议使用个人常用邮箱注册，因为GitHub会通过此邮箱发送重要通知。</li>
+                    <li>启用双重认证(2FA)可以大大提高账号安全性。GitHub支持多种2FA方式，包括短信验证、TOTP应用(如Google Authenticator)和安全密钥(如YubiKey)。</li>
+                    <li>注册后立即设置个人资料头像和简介，这有助于建立专业形象。完整的个人资料可以提高其他开发者对你的信任度。</li>
+                    <li>考虑使用密码管理器来生成和保存复杂密码。推荐使用Bitwarden、1Password或LastPass等知名密码管理器。</li>
+                    <li>设置备份邮箱和恢复选项，以防主邮箱无法访问时恢复账号。</li>
+                    <li>定期检查账号安全设置，移除不再使用的授权应用和设备。</li>
+                    <li>关注GitHub官方博客和Twitter账号，及时获取平台更新和安全通知。</li>
+                </ul>
+                
+                <h3>案例分析</h3>
+                <p>小明是一名前端开发者，他在注册GitHub账号时遇到了以下情况：</p>
+                <ol>
+                    <li>最初选择的用户名"frontend"已被占用，他尝试了"frontend-dev"成功注册</li>
+                    <li>使用公司邮箱注册后，发现该邮箱可能在未来离职后无法访问</li>
+                    <li>忘记启用2FA，导致账号差点被入侵</li>
+                </ol>
+                <p>解决方案：</p>
+                <ul>
+                    <li>改用个人永久邮箱重新注册</li>
+                    <li>启用2FA并使用备份验证方式</li>
+                    <li>定期更新安全设置</li>
+                </ul>
+            </div>
+            <div id="create-repo" class="section">
+                <h2>2. 创建存储库</h2>
+                <p>注册并登录后，创建一个新的存储库：</p>
+                
+                <ol>
+                    <li>点击右上角的"+"图标，选择"New repository"。如果找不到该图标，可能是页面布局发生了变化，可以尝试在页面顶部的导航栏中查找相关选项。</li>
+                    <li>填写存储库名称（建议使用 username.github.io，这样可以直接用于GitHub Pages）。注意，这里的username需要替换为你自己的GitHub用户名，并且名称要小写。</li>
+                    <li>添加描述（可选）。描述可以简要说明这个存储库的用途，方便自己和他人理解。</li>
+                    <li>选择"Public"。这样其他人可以查看你的代码，但如果你有一些敏感信息，也可以选择"Private"，不过私人存储库有一定的限制。</li>
+                    <li>勾选"Initialize this repository with a README"。README文件可以用来介绍你的项目，包括项目的功能、使用方法等，是一个很好的项目说明文档。</li>
+                    <li>点击"Create repository"按钮。如果点击后没有反应，检查一下网络连接，或者查看是否有必填项没有填写。</li>
+                </ol>
+                
+                <h3>存储库设置详解</h3>
+                <ul>
+                    <li><strong>存储库可见性：</strong> Public存储库完全公开，任何人都可以查看；Private存储库需要付费订阅才能创建。</li>
+                    <li><strong>.gitignore文件：</strong> 可以选择适合项目的.gitignore模板，自动排除不需要版本控制的文件。</li>
+                    <li><strong>许可证：</strong> 为项目选择合适的开源许可证，明确他人使用你代码的权利。</li>
+                </ul>
+                
+                <h3>高级技巧</h3>
+                <ul>
+                    <li>创建存储库后，可以立即设置主题标签(topics)帮助他人发现你的项目。选择3-5个相关标签，如"web-development"、"github-pages"、"static-site"等。</li>
+                    <li>考虑添加CONTRIBUTING.md文件说明如何为项目做贡献。详细说明代码风格要求、提交规范、测试要求等。</li>
+                    <li>启用Wiki和Projects功能可以更好地管理项目文档和任务。Wiki适合存放详细文档，Projects适合跟踪任务进度。</li>
+                    <li>设置CODEOWNERS文件可以指定特定文件的代码所有者。当这些文件有修改时，会自动请求指定人员的审查。</li>
+                    <li>配置分支保护规则，防止直接推送到主分支，强制代码审查。</li>
+                    <li>设置自动化工作流，如自动分配审查者、自动添加标签等。</li>
+                    <li>使用模板存储库功能，快速创建标准化项目结构。</li>
+                </ul>
+                
+                <h3>实际应用场景</h3>
+                <p>一个开源项目团队的最佳实践：</p>
+                <ol>
+                    <li>主分支设置为受保护分支，要求至少1人审查才能合并</li>
+                    <li>使用CODEOWNERS自动分配前端文件给前端团队审查</li>
+                    <li>配置自动化测试，确保所有合并请求通过测试</li>
+                    <li>使用Projects看板跟踪功能开发和bug修复进度</li>
+                    <li>定期归档已完成的项目卡片，保持看板整洁</li>
+                </ol>
+            </div>
+            <div id="create-webpage" class="section">
+                <h2>3. 制作网页</h2>
+                <p>创建基本的HTML网页：</p>
+                
+                <ol>
+                    <li>在存储库页面点击"Add file" -> "Create new file"。如果找不到该选项，可能是页面布局调整了，可以在存储库的文件列表上方查找相关按钮。</li>
+                    <li>文件名输入为"index.html"。注意，文件名的大小写要正确，否则可能会导致网站无法正常访问。</li>
+                    <li>添加HTML基本结构代码：</li>
+                    
+                    <li>编写网页内容，包括HTML结构、CSS样式和JavaScript（如有需要）。你可以使用内联样式、内部样式表或外部样式表来美化页面，JavaScript可以为页面添加交互功能。如果遇到代码错误，可以使用浏览器的开发者工具进行调试。</li>
+                    <li>点击"Commit new file"保存。在提交信息中简要描述本次修改的内容，方便后续查看版本历史。</li>
+                </ol>
+                
+                <h3>网页开发最佳实践</h3>
+                <ul>
+                    <li><strong>响应式设计：</strong> 使用媒体查询确保网页在不同设备上都能良好显示。推荐使用移动优先的设计方法，先确保在小屏幕上体验良好，再逐步增强大屏幕体验。</li>
+                    <li><strong>性能优化：</strong> 压缩图片、合并CSS/JS文件、使用CDN加速资源加载。关键渲染路径优化包括内联关键CSS、延迟加载非关键JS和图片。</li>
+                    <li><strong>SEO优化：</strong> 添加合适的meta标签、语义化HTML结构和alt属性。使用结构化数据标记帮助搜索引擎理解内容。</li>
+                    <li><strong>无障碍访问：</strong> 遵循WCAG标准，确保残障人士也能使用你的网站。包括键盘导航支持、足够的颜色对比度、ARIA标签等。</li>
+                    <li><strong>渐进增强：</strong> 确保基本功能在所有浏览器中工作，再为现代浏览器添加增强功能。</li>
+                    <li><strong>浏览器兼容性：</strong> 使用Autoprefixer等工具自动添加CSS前缀，测试主流浏览器兼容性。</li>
+                    <li><strong>代码质量：</strong> 使用ESLint、Stylelint等工具保持代码风格一致，避免常见错误。</li>
+                </ul>
+                
+                <h3>性能优化案例</h3>
+                <p>某电商网站优化前后对比：</p>
+                <table>
+                    <tr>
+                        <th>指标</th>
+                        <th>优化前</th>
+                        <th>优化后</th>
+                    </tr>
+                    <tr>
+                        <td>首屏加载时间</td>
+                        <td>4.2秒</td>
+                        <td>1.8秒</td>
+                    </tr>
+                    <tr>
+                        <td>JS文件大小</td>
+                        <td>1.2MB</td>
+                        <td>450KB</td>
+                    </tr>
+                    <tr>
+                        <td>转化率</td>
+                        <td>2.1%</td>
+                        <td>3.7%</td>
+                    </tr>
+                </table>
+                <p>优化措施：</p>
+                <ol>
+                    <li>图片懒加载和WebP格式转换</li>
+                    <li>代码分割和按需加载</li>
+                    <li>关键CSS内联</li>
+                    <li>服务端渲染首屏内容</li>
+                </ol>
+                
+                <h3>常见问题</h3>
+                <ul>
+                    <li><strong>Q: 为什么我的页面在GitHub上显示不正常？</strong><br>
+                    A: 检查文件路径是否正确，确保使用相对路径而非绝对路径。</li>
+                    <li><strong>Q: 如何添加自定义字体？</strong><br>
+                    A: 可以使用@font-face规则或通过Google Fonts等服务引入。</li>
+                    <li><strong>Q: 提交后为什么看不到更改？</strong><br>
+                    A: GitHub可能需要几分钟处理提交，请耐心等待或强制刷新页面。</li>
+                </ul>
+            </div>
+            <div id="publish" class="section">
+                <h2>4. 发布网站</h2>
+                <p>将网页发布为GitHub Pages：</p>
+                
+                <ol>
+                    <li>在存储库页面点击"Settings"。如果找不到该选项，可能在页面的右上角或者左侧导航栏中。</li>
+                    <li>在左侧导航栏中选择"Pages"。不同版本的GitHub页面布局可能有所不同，耐心查找即可。</li>
+                    <li>在"Source"部分，选择分支为"main"（或"master"）。根据你的存储库实际情况选择正确的分支。</li>
+                    <li>点击"Save"。保存后，GitHub会开始构建你的网站，这个过程可能需要几分钟。</li>
+                    <li>等待几分钟，您的网站将发布在 https://username.github.io 上。如果长时间没有看到网站更新，检查一下配置是否正确，或者查看GitHub的构建日志，排查问题。</li>
+                </ol>
+                
+                <h3>发布后检查清单</h3>
+                <ul>
+                    <li>确认网站可以通过https://username.github.io访问</li>
+                    <li>检查所有链接和图片是否正常工作</li>
+                    <li>在不同浏览器和设备上测试页面显示</li>
+                    <li>使用Google Search Console提交网站地图</li>
+                    <li>设置Google Analytics跟踪访问数据</li>
+                </ul>
+                
+                <h3>高级配置</h3>
+                <ul>
+                    <li>使用GitHub Actions自动化构建和部署流程</li>
+                    <li>配置自定义404页面提升用户体验</li>
+                    <li>设置环境变量管理不同环境的配置</li>
+                    <li>使用Jekyll等静态网站生成器增强功能</li>
+                </ul>
+            </div>
+            <div id="custom-domain" class="section">
+                <h2>5. 自定义域名</h2>
+                <p>要为您的GitHub Pages网站设置自定义域名，请按照以下步骤操作：</p>
+                <ol>
+                    <li id="dns-setup">在您的域名注册商处配置DNS记录，将您的域名指向GitHub Pages的服务器。通常需要创建以下记录：
+                        <ul>
+                            <li>A记录：指向GitHub的IP地址(185.199.108.153等)</li>
+                            <li>CNAME记录：将www子域名指向username.github.io</li>
+                            <li>TXT记录：用于验证域名所有权</li>
+                        </ul>
+                        DNS更改可能需要24-48小时才能完全生效。
+                    </li>
+                    <li id="ssl-cert">在GitHub存储库的设置中添加您的自定义域名，并启用HTTPS。GitHub会自动为您的域名申请Let's Encrypt证书，通常需要几分钟到几小时完成。</li>
+                </ol>
+                
+                <h3>常见问题</h3>
+                <ul>
+                    <li><strong>Q: DNS更改后网站无法访问？</strong><br>
+                    A: 使用dig或nslookup工具检查DNS解析是否正确，确保没有缓存问题。</li>
+                    
+                    <li><strong>Q: HTTPS证书申请失败？</strong><br>
+                    A: 检查DNS是否已完全生效，确保域名没有拼写错误。</li>
+                    
+                    <li><strong>Q: 如何强制HTTPS？</strong><br>
+                    A: 在GitHub Pages设置中勾选"Enforce HTTPS"选项。</li>
+                </ul>
+                
+                <h3>高级技巧</h3>
+                <ul>
+                    <li>使用Cloudflare可以加速全球访问并增强安全性。</li>
+                    <li>配置SPF和DMARC记录可以提高邮件安全性。</li>
+                    <li>考虑设置DNSSEC增强DNS安全性。</li>
+                </ul>
+            </div>
+            <div id="add-content" class="section">
+                <h2>6. 添加内容</h2>
+                <p>让我们为网站添加更多内容，使其更加丰富：</p>
+                <ol>
+                    <li id="blog-post">创建新的博客文章页面，分享您的见解和经验。
+                        <ul>
+                            <li>使用Markdown格式编写文章，便于维护和版本控制</li>
+                            <li>添加适当的分类和标签，方便读者查找</li>
+                            <li>考虑使用Jekyll等静态网站生成器管理博客</li>
+                        </ul>
+                    </li>
+                    <li id="image-gallery">添加图片画廊，展示您的作品或照片。
+                        <ul>
+                            <li>优化图片大小，平衡质量和加载速度</li>
+                            <li>使用响应式图片技术适配不同设备</li>
+                            <li>添加图片描述和alt文本，提升可访问性</li>
+                        </ul>
+                    </li>
+                </ol>
+                
+                <h3>内容管理技巧</h3>
+                <ul>
+                    <li>制定内容发布计划，保持网站更新频率</li>
+                    <li>使用Git版本控制管理内容变更历史</li>
+                    <li>添加评论功能与读者互动</li>
+                    <li>定期备份重要内容</li>
+                </ul>
+            </div>
+            <div id="collaborate" class="section">
+                <h2>7. 团队协作</h2>
+                <p>与团队成员一起协作开发您的网站：</p>
+                <ol>
+                    <li id="add-collaborator">在GitHub存储库中添加协作者，授予他们相应的权限。
+                        <ul>
+                            <li>在存储库Settings > Collaborators中添加团队成员GitHub账号</li>
+                            <li>设置适当的权限级别：Read、Write或Admin</li>
+                            <li>考虑使用团队(Teams)功能管理多个协作者</li>
+                            <li>定期审查协作者权限，移除不再需要的访问</li>
+                        </ul>
+                    </li>
+                    <li id="pull-request">处理拉取请求(Pull Requests)：
+                        <ul>
+                            <li>设置清晰的PR模板，要求提供变更描述和测试结果</li>
+                            <li>配置自动化检查(CI/CD)确保代码质量</li>
+                            <li>使用标签(label)分类PR类型(如bugfix, feature等)</li>
+                            <li>要求至少一名核心成员批准才能合并</li>
+                        </ul>
+                    </li>
+                    <li id="issue-tracking">使用问题跟踪系统：
+                        <ul>
+                            <li>创建详细的问题模板(如Bug报告、功能请求)</li>
+                            <li>使用里程碑(Milestones)跟踪项目进度</li>
+                            <li>定期举行问题分类会议</li>
+                            <li>设置自动化规则(如自动分配问题)</li>
+                        </ul>
+                    </li>
+                    <li id="branch-management">分支管理策略：
+                        <ul>
+                            <li>采用Git Flow或GitHub Flow工作流</li>
+                            <li>为每个功能/修复创建单独的分支</li>
+                            <li>定期同步主分支到开发分支</li>
+                            <li>清理已合并的旧分支</li>
+                        </ul>
+                    </li>
+                    <li id="merge-conflict">解决合并冲突：
+                        <ul>
+                            <li>使用GitHub的冲突解决工具</li>
+                            <li>优先保留主分支的变更</li>
+                            <li>在本地测试解决后的代码</li>
+                            <li>添加冲突解决说明到提交信息</li>
+                        </ul>
+                    </li>
+                    <li id="project-board">使用项目看板：
+                        <ul>
+                            <li>创建To Do、In Progress、Done等列</li>
+                            <li>将问题和PR链接到项目卡片</li>
+                            <li>定期更新卡片状态</li>
+                            <li>使用自动化规则移动卡片</li>
+                        </ul>
+                    </li>
+                </ol>
+                
+                <h3>团队协作最佳实践</h3>
+                <ul>
+                    <li>制定清晰的贡献指南(CONTRIBUTING.md)，包括代码风格、提交规范和测试要求</li>
+                    <li>定期进行代码审查，建议每周至少一次代码审查会议</li>
+                    <li>使用GitHub Discussions进行非代码讨论，如架构设计和功能规划</li>
+                    <li>设置团队例会检查进度，建议使用敏捷开发方法如Scrum</li>
+                    <li>记录决策过程和会议纪要，保存在项目Wiki或专用文档中</li>
+                    <li>使用GitHub Projects管理任务优先级和分配</li>
+                    <li>设置自动化工作流，如自动分配审查者和标签</li>
+                    <li>定期进行团队培训，分享GitHub新功能和最佳实践</li>
+                </ul>
+                
+                <h3>案例分析</h3>
+                <p>一个开源项目团队的协作流程：</p>
+                <ol>
+                    <li>新成员提交PR后，自动触发CI测试和代码质量检查</li>
+                    <li>核心成员在24小时内审查代码并给出反馈</li>
+                    <li>问题分类会议每周一次，使用标签系统管理优先级</li>
+                    <li>使用自动化机器人管理标签、分配和提醒</li>
+                    <li>每月发布一个版本，遵循语义化版本控制</li>
+                    <li>使用GitHub Actions自动化构建和部署流程</li>
+                    <li>定期进行代码健康度检查和技术债务清理</li>
+                </ol>
+                
+                <p>一个企业开发团队的实际案例：</p>
+                <ol>
+                    <li>采用Git Flow工作流，主分支保护严格</li>
+                    <li>每个功能开发创建独立分支，命名规范为feature/xxx</li>
+                    <li>PR必须关联JIRA工单，描述变更原因和影响</li>
+                    <li>代码审查使用Rubber Duck方法，确保理解</li>
+                    <li>使用SonarQube进行静态代码分析</li>
+                    <li>部署到预发布环境进行集成测试</li>
+                    <li>使用Feature Flags控制新功能发布</li>
+                </ol>
+                
+                <h3>常见问题</h3>
+                <ul>
+                    <li><strong>Q: 如何防止未经授权的合并？</strong><br>
+                    A: 设置分支保护规则，要求PR通过检查和批准。具体步骤：<br>
+                    1. 进入仓库Settings > Branches<br>
+                    2. 添加分支保护规则<br>
+                    3. 勾选"Require pull request reviews before merging"<br>
+                    4. 设置最少批准人数<br>
+                    5. 勾选"Require status checks to pass before merging"</li>
+                    
+                    <li><strong>Q: 如何处理长期未解决的冲突？</strong><br>
+                    A: 安排专人负责解决，必要时重新实现功能。建议：<br>
+                    1. 优先解决主分支上的冲突<br>
+                    2. 使用git mergetool可视化解决<br>
+                    3. 保留双方变更的核心逻辑<br>
+                    4. 解决后进行全面测试</li>
+                    
+                    <li><strong>Q: 如何提高团队协作效率？</strong><br>
+                    A: 使用自动化工具减少手动工作，明确责任分工。推荐工具：<br>
+                    1. GitHub Actions - 自动化构建和测试<br>
+                    2. Dependabot - 自动依赖更新<br>
+                    3. Codecov - 代码覆盖率监控<br>
+                    4. Stale - 自动关闭陈旧问题和PR</li>
+                    
+                    <li><strong>Q: 如何管理大型团队的权限？</strong><br>
+                    A: 使用GitHub Teams功能分组管理权限，结合CODEOWNERS文件</li>
+                    
+                    <li><strong>Q: 如何确保代码质量？</strong><br>
+                    A: 建立代码审查清单，包括：<br>
+                    1. 代码风格一致性<br>
+                    2. 单元测试覆盖率<br>
+                    3. 文档完整性<br>
+                    4. 性能考量<br>
+                    5. 安全审查</li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
         <style>
-            h1 {
-                line-height: 10px;
+            .container {
+                display: flex;
+                width: 100%;
+                min-height: 100vh;
             }
+            
+            pre {
+                background-color: #f5f5f5;
+                border-radius: 4px;
+                padding: 16px;
+                position: relative;
+                margin: 16px 0;
+                overflow-x: auto;
+            }
+            
+            .copy-btn {
+                position: absolute;
+                right: 8px;
+                top: 8px;
+                background: #e0e0e0;
+                border: none;
+                border-radius: 4px;
+                padding: 4px 8px;
+                font-size: 12px;
+                cursor: pointer;
+            }
+            
+            .copy-btn:hover {
+                background: #d0d0d0;
+            }
+            .directory {
+                width: 33%;
+                padding: 20px;
+                background-color: rgba(255, 255, 255, 0.95);
+                overflow-y: auto;
+                position: sticky;
+                top: 0;
+                height: 100vh;
+                box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            }
+            .directory h3 {
+                font-size: 1.5em;
+                margin-bottom: 1em;
+                color: #222;
+                border-bottom: 1px solid #ddd;
+                padding-bottom: 0.5em;
+                text-shadow: 0 1px 1px rgba(0,0,0,0.1);
+            }
+            .directory a {
+                display: block;
+                padding: 8px 12px;
+                margin: 4px 0;
+                color: #333;
+                text-decoration: none;
+                border-radius: 4px;
+                transition: all 0.2s ease;
+                font-size: 1em;
+                font-weight: 500;
+            }
+            .directory a:hover {
+                background-color: rgba(0, 0, 0, 0.05);
+                color: #000;
+                transform: translateX(3px);
+            }
+            .sub-directory {
+                padding-left: 15px;
+                margin-top: 5px;
+            }
+            .sub-item {
+                font-size: 0.9em;
+                color: #555;
+                font-weight: 500;
+            }
+            .directory a.active {
+                background-color: rgba(0, 123, 255, 0.1);
+                color: #007bff;
+                font-weight: 500;
+            }
+        </style>
+
+        <script>
+            // 平滑滚动到锚点
+            document.querySelectorAll('#directory a').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // 滚动时高亮当前章节
+            window.addEventListener('scroll', () => {
+                const sections = document.querySelectorAll('.section');
+                const navLinks = document.querySelectorAll('#directory a');
+
+                sections.forEach(section => {
+                    const top = window.scrollY;
+                    const offset = section.offsetTop - 150;
+                    const height = section.offsetHeight;
+                    const id = section.getAttribute('id');
+
+                    if (top >= offset && top < offset + height) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href') === `#${id}`) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            });
+        </script>
+
         </style>
 
 </body>
