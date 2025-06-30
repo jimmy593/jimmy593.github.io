@@ -458,6 +458,44 @@
             </div>
         </div>
     </div>
+// ... 现有代码保持不变 ...
+
+<style>
+    .container {
+        display: flex;
+        width: 100%;
+        min-height: 100vh;
+    }
+
+    /* 添加媒体查询，针对小屏幕设备 */
+    @media (max-width: 768px) {
+        .container {
+            flex-direction: column;
+        }
+
+        .directory {
+            width: 100%;
+            height: auto;
+            position: static;
+            padding: 10px;
+            box-shadow: none;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .content {
+            width: 100%;
+        }
+
+        .section {
+            padding: 10px;
+            margin-bottom: 15px;
+        }
+    }
+
+    /* 现有样式保持不变 ... */
+</style>
+
+// ... 其余代码保持不变 ...
 
         <style>
             .container {
