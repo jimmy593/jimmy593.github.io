@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>哈夫克全域互联终端 · 登录</title>
+    <style>
+        /* 全局重置 + 暗黑科技感基调 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', 'Courier New', monospace;
+        }
+
+        body {
+            background: #0b0f14;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            position: relative;
+            /* 细微的网格背景 — 工业感 */
+            background-image: 
+                linear-gradient(rgba(0, 255, 170, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 170, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        /* 主终端卡片 */
+        .terminal-card {
+            max-width: 680px;
+            width: 100%;
+            background: rgba(10, 18, 25, 0.92);
+            border: 1px solid #2a4a4a;
+            box-shadow: 
+                0 0 0 1px rgba(0, 255, 200, 0.2),
+                0 25px 40px -12px rgba(0, 0, 0, 0.9),
+                inset 0 0 30px rgba(0, 255, 180, 0.05);
+            backdrop-filter: blur(4px);
+            padding: 2.5rem 2rem 2rem 2rem;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        /* 四角装饰 — 终端边框 */
+        .terminal-card::before,
+        .terminal-card::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-style: solid;
+            border-color: #33ffcc;
+            pointer-events: none;
+        }
+
+        .terminal-card::before {
+            top: -1px;
+            left: -1px;
+            border-width: 3px 0 0 3px;
+        }
+
+        .terminal-card::after {
+            bottom: -1px;
+            right: -1px;
+            border-width: 0 3px 3px 0;
+        }
+
+        /* 额外两个角用伪元素不行, 用内层div补全, 但我们可以用outline? 改用span装饰器 */
+        .corner-bottom-left,
+        .corner-top-right {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-style: solid;
+            border-color: #33ffcc;
+            pointer-events: none;
+        }
+
+        .corner-bottom-left {
+            bottom: -1px;
+            left: -1px;
+            border-width: 3px 0 0 3px;
+            border-color: #33ffcc;
+        }
+
+        .corner-top-right {
+            top: -1px;
+            right: -1px;
+            border-width: 0 3px 3px 0;
+            border-color: #33ffcc;
+        }
+
+        /* 品牌区域 */
+        .brand-header {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 2rem;
+        }
+
+        .brand-main {
+            font-size: 2.2rem;
+            font-weight: 500;
+            letter-spacing: 4px;
+            color: #e0f2f0;
+            text-transform: uppercase;
+            line-height: 1.2;
+            text-shadow: 0 0 10px rgba(51, 255, 204, 0.6);
+        }
+
+        .brand-main span {
+            font-weight: 700;
+            color: #33ffcc;
+        }
+
+        .brand-sub {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-top: 0.25rem;
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            color: #7a9c9c;
+            text-transform: uppercase;
+            border-bottom: 1px solid #2a4a4a;
+            padding-bottom: 0.75rem;
+        }
+
+        .brand-sub .haavk {
+            color: #33ffcc;
+            font-weight: 500;
+            letter-spacing: 2px;
+        }
+
+        /* 状态信息滚动区（模拟网页内容中的消息） */
+        .system-feed {
+            background: #0a1218;
+            border-left: 4px solid #33ffcc;
+            padding: 1rem 1.25rem;
+            margin-bottom: 2rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            line-height: 1.7;
+            color: #b0d4d0;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+            border-radius: 0 4px 4px 0;
+        }
+
+        .feed-line {
+            display: flex;
+            align-items: baseline;
+            gap: 0.6rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            opacity: 0.9;
+        }
+
+        .feed-line .tag {
+            color: #33ffcc;
+            font-weight: 600;
+            min-width: 70px;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+        }
+
+        .feed-line .content {
+            color: #c0e0dc;
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .feed-line .content.warn {
+            color: #ffb86b;
+        }
+
+        /* 登录表单 */
+        .login-section {
+            margin-top: 1.5rem;
+        }
+
+        .login-title {
+            font-size: 0.9rem;
+            letter-spacing: 4px;
+            color: #7a9c9c;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .login-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, #2a4a4a, transparent);
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            color: #33ffcc;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            opacity: 0.8;
+        }
+
+        .input-group input {
+            width: 100%;
+            background: #0c141c;
+            border: 1px solid #2a4a4a;
+            padding: 0.9rem 1rem;
+            color: #d0f0ec;
+            font-size: 1rem;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
+            outline: none;
+            transition: all 0.2s;
+            caret-color: #33ffcc;
+        }
+
+        .input-group input:focus {
+            border-color: #33ffcc;
+            box-shadow: 0 0 12px rgba(51, 255, 204, 0.25);
+            background: #0f1a24;
+        }
+
+        .input-group input::placeholder {
+            color: #3a5a5a;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        /* 双列辅助选项 */
+        .login-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #7a9c9c;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border: 1px solid #2a4a4a;
+            background: #0a1218;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.15s;
+        }
+
+        .checkbox-label input[type="checkbox"]:checked {
+            background: #33ffcc;
+            border-color: #33ffcc;
+        }
+
+        .checkbox-label input[type="checkbox"]:checked::after {
+            content: '✓';
+            position: absolute;
+            top: -2px;
+            left: 2px;
+            color: #0b0f14;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .forgot-link {
+            color: #5f8f8f;
+            text-decoration: none;
+            border-bottom: 1px dashed #2a4a4a;
+            transition: color 0.2s;
+        }
+
+        .forgot-link:hover {
+            color: #33ffcc;
+            border-bottom-color: #33ffcc;
+        }
+
+        /* 登录按钮 */
+        .login-btn {
+            width: 100%;
+            background: transparent;
+            border: 1.5px solid #33ffcc;
+            color: #33ffcc;
+            padding: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        .login-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(51, 255, 204, 0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .login-btn:hover {
+            background: #33ffcc;
+            color: #0b0f14;
+            box-shadow: 0 0 25px rgba(51, 255, 204, 0.4);
+        }
+
+        .login-btn:hover::before {
+            left: 100%;
+        }
+
+        .login-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* 底部声明 */
+        .terminal-footer {
+            text-align: center;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            color: #3a5a5a;
+            text-transform: uppercase;
+            margin-top: 1.5rem;
+            border-top: 1px solid #1a2a2a;
+            padding-top: 1.25rem;
+        }
+
+        .terminal-footer span {
+            color: #33ffcc;
+            opacity: 0.6;
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 480px) {
+            .terminal-card {
+                padding: 1.8rem 1.2rem;
+            }
+            .brand-main {
+                font-size: 1.6rem;
+                letter-spacing: 2px;
+            }
+            .feed-line {
+                font-size: 0.75rem;
+                white-space: normal;
+                word-break: break-word;
+            }
+            .feed-line .tag {
+                min-width: 60px;
+            }
+            .login-btn {
+                letter-spacing: 2px;
+                padding: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="terminal-card">
+        <!-- 补齐另外两个角的装饰 -->
+        <span class="corner-bottom-left"></span>
+        <span class="corner-top-right"></span>
+
+        <!-- 品牌区 -->
+        <div class="brand-header">
+            <div class="brand-main">哈夫克全域互联终端</div>
+            <div class="brand-sub">
+                <span>HAAVK UNIVERSAL TERMINAL</span>
+                <span class="haavk">HAAVK 集团</span>
+            </div>
+        </div>
+
+        <!-- 系统消息流 — 完全基于原始网页内容 -->
+        <div class="system-feed">
+            <div class="feed-line">
+                <span class="tag">遍历完成</span>
+                <span class="content">已为所有条目找到替代方案</span>
+            </div>
+            <div class="feed-line">
+                <span class="tag">系统上线</span>
+                <span class="content">低效率行为已精确指向个人</span>
+            </div>
+            <div class="feed-line">
+                <span class="tag">评估完成</span>
+                <span class="content warn">未佩戴脑机者仍持负面舆情</span>
+            </div>
+            <div class="feed-line">
+                <span class="tag">计算结果</span>
+                <span class="content">损失由非股权关联主体承</span>
+            </div>
+        </div>
+
+        <!-- 登录表单区域 -->
+        <div class="login-section">
+            <div class="login-title">身份认证 / 接入终端</div>
+
+            <form action="#" method="post" onsubmit="event.preventDefault(); alert('终端接入演示 · 身份验证未启用 (模拟界面)');">
+                <div class="input-group">
+                    <label for="terminal-id">终端识别码 / ID</label>
+                    <input type="text" id="terminal-id" name="terminal_id" placeholder="输入 HAAVK 认证 ID" autocomplete="off" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="access-key">访问密钥 / ACCESS KEY</label>
+                    <input type="password" id="access-key" name="access_key" placeholder="••••••••••••••••" autocomplete="off" required>
+                </div>
+
+                <div class="login-options">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="remember" checked> 保持神经链接
+                    </label>
+                    <a href="#" class="forgot-link" onclick="alert('请联系哈夫克系统管理员 (模拟)'); return false;">密钥恢复</a>
+                </div>
+
+                <button type="submit" class="login-btn">接入系统</button>
+            </form>
+
+            <div class="terminal-footer">
+                <span>HAAVK</span> · 全域互联 · 脑机接口 v3.7.2
+            </div>
+        </div>
+    </div>
+</body>
+</html>
