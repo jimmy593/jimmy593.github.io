@@ -19,15 +19,12 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /* 浅色科技背景纹理 */
             background-image: radial-gradient(circle at 20% 30%, rgba(255,255,255,0.8) 0%, transparent 30%),
                               radial-gradient(circle at 80% 70%, rgba(255,255,255,0.6) 0%, transparent 40%);
             background-color: #e9eef6;
             padding: 2rem;
-            overflow-x: hidden;
         }
 
-        /* 主容器 */
         .main-container {
             display: flex;
             width: 100%;
@@ -49,7 +46,6 @@
             min-width: 300px;
         }
 
-        /* 左上角信息块 */
         .top-left-info {
             position: absolute;
             top: -40px;
@@ -139,10 +135,8 @@
         .form-wrapper {
             flex: 0 0 440px;
             position: relative;
-            /* 高度由内部表单撑开 */
         }
 
-        /* 卡片通用样式 */
         .form-card {
             background: #ffffff;
             box-shadow: 0 20px 40px rgba(0, 20, 60, 0.08), 0 6px 12px rgba(0, 0, 0, 0.02);
@@ -152,7 +146,6 @@
             transition: opacity 0.3s ease, transform 0.3s ease;
         }
 
-        /* 隐藏状态 */
         .form-card.hidden {
             display: none;
             opacity: 0;
@@ -177,6 +170,7 @@
 
         .form-group {
             margin-bottom: 1.2rem;
+            position: relative; /* 为下拉框弹出层定位 */
         }
 
         .form-group label {
@@ -187,8 +181,7 @@
             font-weight: 500;
         }
 
-        .form-group input,
-        .form-group select {
+        .form-group input {
             width: 100%;
             padding: 0.8rem 1rem;
             border: 1px solid #d0d8e8;
@@ -198,16 +191,6 @@
             outline: none;
             transition: all 0.15s;
             background: #fafcff;
-            appearance: none; /* 移除原生下拉箭头 */
-        }
-
-        /* 为下拉框添加自定义箭头 */
-        .form-group select {
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233a4a6a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 1rem center;
-            background-size: 1em;
-            cursor: pointer;
         }
 
         .form-group input::placeholder {
@@ -215,13 +198,120 @@
             font-size: 0.9rem;
         }
 
-        .form-group input:focus,
-        .form-group select:focus {
+        .form-group input:focus {
             border-color: #2f6bff;
             background-color: #ffffff;
             box-shadow: 0 0 0 3px rgba(47, 107, 255, 0.1);
         }
 
+        /* ======== 自定义下拉框组件样式 ======== */
+        .custom-select-container {
+            position: relative;
+            user-select: none;
+        }
+
+        .custom-select-trigger {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #d0d8e8;
+            border-radius: 3px;
+            font-size: 0.95rem;
+            color: #1e2b47;
+            background: #fafcff;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.15s;
+        }
+
+        .custom-select-trigger:hover {
+            border-color: #b0c0d8;
+        }
+
+        .custom-select-container.open .custom-select-trigger {
+            border-color: #2f6bff;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(47, 107, 255, 0.1);
+        }
+
+        .custom-select-trigger::after {
+            content: '';
+            width: 10px;
+            height: 10px;
+            border-right: 2px solid #3a4a6a;
+            border-bottom: 2px solid #3a4a6a;
+            transform: rotate(45deg);
+            transition: transform 0.2s;
+            margin-top: -4px;
+        }
+
+        .custom-select-container.open .custom-select-trigger::after {
+            transform: rotate(-135deg);
+            margin-top: 4px;
+        }
+
+        /* 弹出层 */
+        .custom-select-options {
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 0;
+            right: 0;
+            background: #ffffff;
+            border: 1px solid #d0d8e8;
+            border-radius: 3px;
+            box-shadow: 0 10px 25px rgba(0, 20, 60, 0.1);
+            z-index: 100;
+            max-height: 250px;
+            overflow-y: auto;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-5px);
+            transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .custom-select-container.open .custom-select-options {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        /* 选项样式 */
+        .custom-select-option {
+            padding: 0.8rem 1rem;
+            font-size: 0.9rem;
+            color: #1e2b47;
+            cursor: pointer;
+            transition: background 0.15s, color 0.15s;
+        }
+
+        /* 鼠标悬停变深（截图效果） */
+        .custom-select-option:hover {
+            background-color: #6b7280; /* 深灰色背景 */
+            color: #ffffff;            /* 文字变白 */
+        }
+
+        /* 选中项高亮 */
+        .custom-select-option.selected {
+            background-color: #f0f4fa;
+            color: #2f6bff;
+            font-weight: 500;
+        }
+        .custom-select-option.selected:hover {
+            background-color: #6b7280;
+            color: #ffffff;
+        }
+
+        /* 滚动条美化 */
+        .custom-select-options::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-select-options::-webkit-scrollbar-thumb {
+            background: #c0ccdf;
+            border-radius: 3px;
+        }
+
+        /* ======== 按钮等其他样式 ======== */
         .submit-btn {
             width: 100%;
             background: #2f6bff;
@@ -261,32 +351,12 @@
 
         /* 响应式调整 */
         @media (max-width: 980px) {
-            .main-container {
-                flex-direction: column;
-                gap: 3rem;
-                padding: 2rem 1rem;
-            }
-            .brand-section {
-                width: 100%;
-                min-width: auto;
-            }
-            .top-left-info {
-                position: static;
-                text-align: center;
-                margin-bottom: 1rem;
-                width: 100%;
-            }
-            .station-badge {
-                justify-content: center;
-            }
-            .form-wrapper {
-                flex: 0 0 auto;
-                width: 100%;
-                max-width: 450px;
-            }
-            .logo-large {
-                margin-top: 0;
-            }
+            .main-container { flex-direction: column; gap: 3rem; padding: 2rem 1rem; }
+            .brand-section { width: 100%; min-width: auto; }
+            .top-left-info { position: static; text-align: center; margin-bottom: 1rem; width: 100%; }
+            .station-badge { justify-content: center; }
+            .form-wrapper { flex: 0 0 auto; width: 100%; max-width: 450px; }
+            .logo-large { margin-top: 0; }
         }
     </style>
 </head>
@@ -314,29 +384,22 @@
 
         <!-- 大 LOGO 区域 -->
         <div class="logo-large">
-            <!-- 精确重绘的图形 LOGO -->
             <svg class="logo-icon" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <!-- 左侧菱形结构 -->
+                <!-- 左侧菱形 -->
                 <path d="M 90 50 L 40 110 L 90 170 L 90 130 L 70 110 L 90 90 Z" fill="#2F6BFF"/>
-                <!-- 中间垂直主干 (带右上切角) -->
+                <!-- 中间垂直主干 -->
                 <path d="M 105 15 L 130 50 L 130 100 L 105 115 L 105 70 L 90 55 L 105 15 Z" fill="#2F6BFF"/>
-                <!-- 右侧三角形结构 -->
+                <!-- 右侧三角 -->
                 <path d="M 115 70 L 165 110 L 115 150 Z" fill="#2F6BFF"/>
-                <!-- 底部尖刺结构 (覆盖在右侧上方) -->
+                <!-- 底部尖刺 -->
                 <path d="M 105 125 L 125 145 L 105 185 L 85 155 L 105 125 Z" fill="#2F6BFF"/>
             </svg>
 
-            <!-- 精确重绘的文字 LOGO -->
             <svg class="logo-text-svg" viewBox="0 0 300 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <!-- H -->
                 <path d="M 10 15 L 10 45 L 25 45 L 25 33 L 35 33 L 35 45 L 50 45 L 50 15 L 35 15 L 35 25 L 25 25 L 25 15 Z" fill="#2F6BFF"/>
-                <!-- A (倾斜斜切) -->
                 <path d="M 60 45 L 75 15 L 90 15 L 105 45 L 90 45 L 87 37 L 78 37 L 75 45 Z M 83.5 28 L 81 28 L 82.5 22 Z" fill="#2F6BFF"/>
-                <!-- A (倾斜斜切) -->
                 <path d="M 115 45 L 130 15 L 145 15 L 160 45 L 145 45 L 142 37 L 133 37 L 130 45 Z M 138.5 28 L 136 28 L 137.5 22 Z" fill="#2F6BFF"/>
-                <!-- V -->
                 <path d="M 170 15 L 185 45 L 200 45 L 215 15 L 198 15 L 192 32 L 186 15 Z" fill="#2F6BFF"/>
-                <!-- K (带有分离感) -->
                 <path d="M 225 15 L 225 45 L 240 45 L 240 35 L 255 45 L 275 45 L 250 28 L 270 15 L 252 15 L 240 24 L 240 15 Z" fill="#2F6BFF"/>
             </svg>
         </div>
@@ -350,16 +413,15 @@
             <h1>哈夫克全域互联终端</h1>
             <div class="subhead">HAAVK UNIVERSAL TERMINAL · 员工接入</div>
 
-            <!-- 使用 onsubmit 阻止表单默认提交，用于演示 -->
             <form action="#" method="post" onsubmit="event.preventDefault(); alert('演示界面 — 接入职业生涯 (模拟成功)');">
                 <div class="form-group">
-                    <label for="login-account">员工账号</label>
-                    <input type="text" id="login-account" placeholder="请输入账号" autocomplete="off" required>
+                    <label>员工账号</label>
+                    <input type="text" placeholder="请输入账号" autocomplete="off" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="login-password">密码</label>
-                    <input type="password" id="login-password" placeholder="请输入接入密码" autocomplete="off" required>
+                    <label>密码</label>
+                    <input type="password" placeholder="请输入接入密码" autocomplete="off" required>
                 </div>
 
                 <button type="submit" class="submit-btn">接入职业生涯</button>
@@ -377,34 +439,48 @@
 
             <form action="#" method="post" onsubmit="event.preventDefault(); alert('演示界面 — 提交入职登记 (模拟成功)');">
                 <div class="form-group">
-                    <label for="reg-account">员工账号（英文 / 数字）</label>
-                    <input type="text" id="reg-account" placeholder="请输入账号" autocomplete="off" required>
+                    <label>员工账号（英文 / 数字）</label>
+                    <input type="text" placeholder="请输入账号" autocomplete="off" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="reg-name">显示名称</label>
-                    <input type="text" id="reg-name" placeholder="请输入显示名称" autocomplete="off" required>
+                    <label>显示名称</label>
+                    <input type="text" placeholder="请输入显示名称" autocomplete="off" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="reg-dept">所属部门</label>
-                    <select id="reg-dept" required>
-                        <option value="" disabled selected>请选择所属部门</option>
-                        <option value="security" selected>安全防卫部</option>
-                        <option value="tech">技术支持部</option>
-                        <option value="logistics">物流统筹部</option>
-                        <option value="research">核心研发部</option>
-                    </select>
+                    <label>所属部门</label>
+                    <!-- 自定义下拉框组件 -->
+                    <div class="custom-select-container" id="deptSelect">
+                        <div class="custom-select-trigger">
+                            <span id="deptLabel">请选择所属部门</span>
+                        </div>
+                        <div class="custom-select-options">
+                            <div class="custom-select-option" data-value="地方关系分局">地方关系分局</div>
+                            <div class="custom-select-option" data-value="人力资源中心">人力资源中心</div>
+                            <div class="custom-select-option" data-value="效能部">效能部</div>
+                            <div class="custom-select-option" data-value="财务部">财务部</div>
+                            <div class="custom-select-option" data-value="工程部">工程部</div>
+                            <div class="custom-select-option" data-value="后勤保障部">后勤保障部</div>
+                            <div class="custom-select-option" data-value="人工智能研发部">人工智能研发部</div>
+                            <div class="custom-select-option" data-value="技术工程部">技术工程部</div>
+                            <div class="custom-select-option" data-value="品牌营销部">品牌营销部</div>
+                            <div class="custom-select-option" data-value="非必要人员滞留部">非必要人员滞留部</div>
+                            <div class="custom-select-option selected" data-value="安全防卫部">安全防卫部</div>
+                        </div>
+                        <!-- 隐藏的 input 用于表单提交真实数据 -->
+                        <input type="hidden" name="department" id="deptInput" value="安全防卫部">
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="reg-password">接入密码</label>
-                    <input type="password" id="reg-password" placeholder="至少 6 位" minlength="6" autocomplete="off" required>
+                    <label>接入密码</label>
+                    <input type="password" placeholder="至少 6 位" minlength="6" autocomplete="off" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="reg-confirm">确认密码</label>
-                    <input type="password" id="reg-confirm" placeholder="再次输入密码" minlength="6" autocomplete="off" required>
+                    <label>确认密码</label>
+                    <input type="password" placeholder="再次输入密码" minlength="6" autocomplete="off" required>
                 </div>
 
                 <button type="submit" class="submit-btn">提交入职登记</button>
@@ -420,25 +496,69 @@
 
 <script>
     /**
-     * 切换视图功能
-     * @param {string} viewType - 'login' 或 'register'
+     * 切换登录/注册视图
      */
     function toggleView(viewType) {
         const loginForm = document.getElementById('loginForm');
         const registerForm = document.getElementById('registerForm');
+        
+        // 每次切换时，关闭下拉框
+        document.getElementById('deptSelect').classList.remove('open');
 
         if (viewType === 'register') {
-            // 切换到注册页
             loginForm.classList.add('hidden');
             registerForm.classList.remove('hidden');
         } else {
-            // 切换到登录页
             registerForm.classList.add('hidden');
             loginForm.classList.remove('hidden');
         }
     }
 
-    // 动态更新时间（模拟终端显示）
+    /**
+     * 自定义下拉框逻辑
+     */
+    const deptSelect = document.getElementById('deptSelect');
+    const deptLabel = document.getElementById('deptLabel');
+    const deptInput = document.getElementById('deptInput');
+    const options = document.querySelectorAll('.custom-select-option');
+
+    // 默认选中的文字（根据截图，默认选中“安全防卫部”）
+    deptLabel.textContent = "安全防卫部";
+
+    // 1. 点击触发器，切换弹出层展开/收起
+    deptSelect.querySelector('.custom-select-trigger').addEventListener('click', function(e) {
+        e.stopPropagation(); // 阻止事件冒泡到 document
+        deptSelect.classList.toggle('open');
+    });
+
+    // 2. 点击选项，更新选中值并关闭弹出层
+    options.forEach(option => {
+        option.addEventListener('click', function(e) {
+            // 获取选中的文本和值
+            const value = this.getAttribute('data-value');
+            const text = this.textContent;
+
+            // 更新界面显示
+            deptLabel.textContent = text;
+            deptInput.value = value;
+
+            // 更新选中样式
+            options.forEach(opt => opt.classList.remove('selected'));
+            this.classList.add('selected');
+
+            // 关闭下拉框
+            deptSelect.classList.remove('open');
+        });
+    });
+
+    // 3. 点击页面空白处，关闭弹出层
+    document.addEventListener('click', function(e) {
+        if (!deptSelect.contains(e.target)) {
+            deptSelect.classList.remove('open');
+        }
+    });
+
+    // 动态更新终端时间
     function updateTime() {
         const timeEl = document.querySelector('.version-info');
         if(timeEl) {
@@ -449,16 +569,12 @@
             const hours = String(now.getHours()).padStart(2, '0');
             const minutes = String(now.getMinutes()).padStart(2, '0');
             const seconds = String(now.getSeconds()).padStart(2, '0');
-            
-            // 保留原有的结构，只更新时间和日期部分
             timeEl.innerHTML = `VERSION<br>V1.0.0<br>${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
         }
     }
-    
-    // 页面加载完成后启动时钟
     window.onload = function() {
         updateTime();
-        setInterval(updateTime, 1000); // 每秒刷新
+        setInterval(updateTime, 1000);
     };
 </script>
 </body>
