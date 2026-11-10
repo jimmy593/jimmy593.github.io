@@ -5,362 +5,80 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>哈夫克全域互联终端</title>
     <style>
-        /* 重置 & 基础设置 */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-        }
-
+        /* ---- 基础样式 ---- */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', 'Roboto', sans-serif; }
         body {
-            background: #f2f5fa;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background: #f2f5fa; min-height: 100vh; display: flex; justify-content: center; align-items: center;
             background-image: radial-gradient(circle at 20% 30%, rgba(255,255,255,0.8) 0%, transparent 30%),
                               radial-gradient(circle at 80% 70%, rgba(255,255,255,0.6) 0%, transparent 40%);
-            background-color: #e9eef6;
-            padding: 2rem;
+            background-color: #e9eef6; padding: 2rem;
         }
+        .main-container { display: flex; width: 100%; max-width: 1280px; align-items: center; justify-content: space-between; gap: 4rem; padding: 0 2rem; }
+        
+        /* ---- 左侧品牌样式 ---- */
+        .brand-section { flex: 1; display: flex; flex-direction: column; align-items: center; position: relative; min-width: 300px; }
+        .top-left-info { position: absolute; top: -40px; left: 0; color: #2a3a5a; font-size: 0.8rem; text-align: left; }
+        .top-left-info .haavk-text { font-weight: 800; font-size: 1.1rem; letter-spacing: 3px; color: #1e2b47; }
+        .top-left-info .sub-text { font-size: 0.65rem; color: #6b7c9e; margin-bottom: 1.2rem; }
+        .station-badge { display: flex; align-items: center; gap: 8px; margin-bottom: 0.75rem; }
+        .station-badge .line { width: 3px; height: 20px; background: #2f6bff; border-radius: 2px; }
+        .station-badge .station-num { font-size: 1.2rem; font-weight: 600; color: #1e2b47; }
+        .version-info { font-size: 0.7rem; color: #6b7c9e; margin-top: 0.5rem; line-height: 1.6; }
+        
+        /* 标志区域尺寸 */
+        .logo-large { width: 340px; display: flex; flex-direction: column; align-items: center; margin-top: 1.5rem; }
+        .logo-icon { width: 250px; height: 250px; margin-bottom: 0.5rem; }
+        .logo-text-svg { width: 250px; margin-top: 0px; }
 
-        .main-container {
-            display: flex;
-            width: 100%;
-            max-width: 1280px;
-            align-items: center;
-            justify-content: space-between;
-            gap: 4rem;
-            padding: 0 2rem;
-        }
+        /* ---- 右侧表单样式 ---- */
+        .form-wrapper { flex: 0 0 440px; position: relative; }
+        .form-card { background: #ffffff; box-shadow: 0 20px 40px rgba(0, 20, 60, 0.08); border-radius: 4px; padding: 2.5rem; width: 100%; transition: opacity 0.3s; }
+        .form-card.hidden { display: none; opacity: 0; }
+        .form-card h1 { font-size: 1.5rem; font-weight: 600; color: #1e2b47; margin-bottom: 0.2rem; }
+        .form-card .subhead { font-size: 0.7rem; color: #8a9bb8; text-transform: uppercase; margin-bottom: 1.8rem; }
+        
+        .form-group { margin-bottom: 1.2rem; position: relative; }
+        .form-group label { display: block; font-size: 0.8rem; color: #3a4a6a; margin-bottom: 0.4rem; font-weight: 500; }
+        .form-group input { width: 100%; padding: 0.8rem 1rem; border: 1px solid #d0d8e8; border-radius: 3px; font-size: 0.95rem; color: #1e2b47; outline: none; background: #fafcff; transition: all 0.15s; }
+        .form-group input:focus { border-color: #2f6bff; background: #ffffff; box-shadow: 0 0 0 3px rgba(47, 107, 255, 0.1); }
+        
+        /* 自定义下拉框 */
+        .custom-select-container { position: relative; user-select: none; }
+        .custom-select-trigger { width: 100%; padding: 0.8rem 1rem; border: 1px solid #d0d8e8; border-radius: 3px; font-size: 0.95rem; color: #1e2b47; background: #fafcff; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: all 0.15s; }
+        .custom-select-container.open .custom-select-trigger { border-color: #2f6bff; background: #ffffff; box-shadow: 0 0 0 3px rgba(47, 107, 255, 0.1); }
+        .custom-select-trigger::after { content: ''; width: 10px; height: 10px; border-right: 2px solid #3a4a6a; border-bottom: 2px solid #3a4a6a; transform: rotate(45deg); transition: transform 0.2s; margin-top: -4px; }
+        .custom-select-container.open .custom-select-trigger::after { transform: rotate(-135deg); margin-top: 4px; }
+        .custom-select-options { position: absolute; top: calc(100% + 4px); left: 0; right: 0; background: #ffffff; border: 1px solid #d0d8e8; border-radius: 3px; box-shadow: 0 10px 25px rgba(0, 20, 60, 0.1); z-index: 100; max-height: 250px; overflow-y: auto; opacity: 0; visibility: hidden; transform: translateY(-5px); transition: all 0.2s; }
+        .custom-select-container.open .custom-select-options { opacity: 1; visibility: visible; transform: translateY(0); }
+        .custom-select-option { padding: 0.8rem 1rem; font-size: 0.9rem; color: #1e2b47; cursor: pointer; transition: background 0.15s, color 0.15s; }
+        .custom-select-option:hover { background-color: #6b7280; color: #ffffff; } /* 鼠标拂过变深色 */
+        .custom-select-option.selected { background-color: #f0f4fa; color: #2f6bff; font-weight: 500; }
+        .custom-select-option.selected:hover { background-color: #6b7280; color: #ffffff; }
 
-        /* ========= 左侧：品牌与信息区域 ========= */
-        .brand-section {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            min-width: 300px;
-        }
+        .submit-btn { width: 100%; background: #2f6bff; color: white; border: none; padding: 0.9rem; font-size: 1rem; font-weight: 500; border-radius: 3px; cursor: pointer; transition: background 0.2s; margin-top: 0.5rem; }
+        .submit-btn:hover { background: #1f5aef; }
+        .action-link { text-align: center; font-size: 0.85rem; color: #6b7c9e; margin-top: 1.2rem; }
+        .action-link a { color: #2f6bff; text-decoration: none; cursor: pointer; }
+        .action-link a:hover { text-decoration: underline; }
 
-        .top-left-info {
-            position: absolute;
-            top: -40px;
-            left: 0;
-            color: #2a3a5a;
-            font-size: 0.8rem;
-            line-height: 1.6;
-            letter-spacing: 0.5px;
-            text-align: left;
-        }
+        /* ---- Toast 提示框 ---- */
+        .toast-container { position: fixed; top: 30px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
+        .toast { padding: 12px 24px; border-radius: 4px; font-size: 0.9rem; font-weight: 500; color: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.15); animation: slideDown 0.3s ease forwards; }
+        .toast.success { background-color: #2f6bff; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
 
-        .top-left-info .haavk-text {
-            font-weight: 800;
-            font-size: 1.1rem;
-            letter-spacing: 3px;
-            color: #1e2b47;
-            margin-bottom: 2px;
-        }
-
-        .top-left-info .sub-text {
-            font-size: 0.65rem;
-            color: #6b7c9e;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            margin-bottom: 1.2rem;
-        }
-
-        .station-badge {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 0.75rem;
-        }
-
-        .station-badge .line {
-            width: 3px;
-            height: 20px;
-            background: #2f6bff;
-            border-radius: 2px;
-        }
-
-        .station-badge .station-num {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #1e2b47;
-        }
-
-        .station-badge .station-label {
-            font-size: 0.7rem;
-            color: #6b7c9e;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .version-info {
-            font-size: 0.7rem;
-            color: #6b7c9e;
-            margin-top: 0.5rem;
-            line-height: 1.6;
-        }
-
-        /* 中央大 LOGO */
-        .logo-large {
-            width: 320px;
-            height: auto;
-            margin-top: 3rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .logo-icon {
-            width: 240px;
-            height: 240px;
-            display: block;
-            margin-bottom: 1rem;
-        }
-
-        .logo-text-svg {
-            width: 260px;
-            height: auto;
-            margin-top: 10px;
-        }
-
-        /* ========= 右侧：表单卡片容器 ========= */
-        .form-wrapper {
-            flex: 0 0 440px;
-            position: relative;
-        }
-
-        .form-card {
-            background: #ffffff;
-            box-shadow: 0 20px 40px rgba(0, 20, 60, 0.08), 0 6px 12px rgba(0, 0, 0, 0.02);
-            border-radius: 4px;
-            padding: 2.5rem;
-            width: 100%;
-            transition: opacity 0.3s ease, transform 0.3s ease;
-        }
-
-        .form-card.hidden {
-            display: none;
-            opacity: 0;
-            transform: translateY(10px);
-        }
-
-        .form-card h1 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #1e2b47;
-            letter-spacing: 1px;
-            margin-bottom: 0.2rem;
-        }
-
-        .form-card .subhead {
-            font-size: 0.7rem;
-            color: #8a9bb8;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 1.8rem;
-        }
-
-        .form-group {
-            margin-bottom: 1.2rem;
-            position: relative; /* 为下拉框弹出层定位 */
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 0.8rem;
-            color: #3a4a6a;
-            margin-bottom: 0.4rem;
-            font-weight: 500;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 0.8rem 1rem;
-            border: 1px solid #d0d8e8;
-            border-radius: 3px;
-            font-size: 0.95rem;
-            color: #1e2b47;
-            outline: none;
-            transition: all 0.15s;
-            background: #fafcff;
-        }
-
-        .form-group input::placeholder {
-            color: #a8b6cc;
-            font-size: 0.9rem;
-        }
-
-        .form-group input:focus {
-            border-color: #2f6bff;
-            background-color: #ffffff;
-            box-shadow: 0 0 0 3px rgba(47, 107, 255, 0.1);
-        }
-
-        /* ======== 自定义下拉框组件样式 ======== */
-        .custom-select-container {
-            position: relative;
-            user-select: none;
-        }
-
-        .custom-select-trigger {
-            width: 100%;
-            padding: 0.8rem 1rem;
-            border: 1px solid #d0d8e8;
-            border-radius: 3px;
-            font-size: 0.95rem;
-            color: #1e2b47;
-            background: #fafcff;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all 0.15s;
-        }
-
-        .custom-select-trigger:hover {
-            border-color: #b0c0d8;
-        }
-
-        .custom-select-container.open .custom-select-trigger {
-            border-color: #2f6bff;
-            background-color: #ffffff;
-            box-shadow: 0 0 0 3px rgba(47, 107, 255, 0.1);
-        }
-
-        .custom-select-trigger::after {
-            content: '';
-            width: 10px;
-            height: 10px;
-            border-right: 2px solid #3a4a6a;
-            border-bottom: 2px solid #3a4a6a;
-            transform: rotate(45deg);
-            transition: transform 0.2s;
-            margin-top: -4px;
-        }
-
-        .custom-select-container.open .custom-select-trigger::after {
-            transform: rotate(-135deg);
-            margin-top: 4px;
-        }
-
-        /* 弹出层 */
-        .custom-select-options {
-            position: absolute;
-            top: calc(100% + 4px);
-            left: 0;
-            right: 0;
-            background: #ffffff;
-            border: 1px solid #d0d8e8;
-            border-radius: 3px;
-            box-shadow: 0 10px 25px rgba(0, 20, 60, 0.1);
-            z-index: 100;
-            max-height: 250px;
-            overflow-y: auto;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-5px);
-            transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-
-        .custom-select-container.open .custom-select-options {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        /* 选项样式 */
-        .custom-select-option {
-            padding: 0.8rem 1rem;
-            font-size: 0.9rem;
-            color: #1e2b47;
-            cursor: pointer;
-            transition: background 0.15s, color 0.15s;
-        }
-
-        /* 鼠标悬停变深（截图效果） */
-        .custom-select-option:hover {
-            background-color: #6b7280; /* 深灰色背景 */
-            color: #ffffff;            /* 文字变白 */
-        }
-
-        /* 选中项高亮 */
-        .custom-select-option.selected {
-            background-color: #f0f4fa;
-            color: #2f6bff;
-            font-weight: 500;
-        }
-        .custom-select-option.selected:hover {
-            background-color: #6b7280;
-            color: #ffffff;
-        }
-
-        /* 滚动条美化 */
-        .custom-select-options::-webkit-scrollbar {
-            width: 6px;
-        }
-        .custom-select-options::-webkit-scrollbar-thumb {
-            background: #c0ccdf;
-            border-radius: 3px;
-        }
-
-        /* ======== 按钮等其他样式 ======== */
-        .submit-btn {
-            width: 100%;
-            background: #2f6bff;
-            color: white;
-            border: none;
-            padding: 0.9rem;
-            font-size: 1rem;
-            font-weight: 500;
-            letter-spacing: 1px;
-            border-radius: 3px;
-            cursor: pointer;
-            transition: background 0.2s;
-            margin-top: 0.5rem;
-        }
-
-        .submit-btn:hover {
-            background: #1f5aef;
-        }
-
-        .action-link {
-            text-align: center;
-            font-size: 0.85rem;
-            color: #6b7c9e;
-            margin-top: 1.2rem;
-        }
-
-        .action-link a {
-            color: #2f6bff;
-            text-decoration: none;
-            font-weight: 500;
-            cursor: pointer;
-        }
-
-        .action-link a:hover {
-            text-decoration: underline;
-        }
-
-        /* 响应式调整 */
         @media (max-width: 980px) {
             .main-container { flex-direction: column; gap: 3rem; padding: 2rem 1rem; }
             .brand-section { width: 100%; min-width: auto; }
-            .top-left-info { position: static; text-align: center; margin-bottom: 1rem; width: 100%; }
-            .station-badge { justify-content: center; }
-            .form-wrapper { flex: 0 0 auto; width: 100%; max-width: 450px; }
-            .logo-large { margin-top: 0; }
+            .top-left-info { position: static; text-align: center; margin-bottom: 1rem; }
+            .form-wrapper { width: 100%; max-width: 450px; }
         }
     </style>
 </head>
 <body>
+
+<div class="toast-container" id="toastContainer"></div>
 
 <div class="main-container">
     <!-- 左侧品牌区域 -->
@@ -368,93 +86,84 @@
         <div class="top-left-info">
             <div class="haavk-text">HAAVK</div>
             <div class="sub-text">GLOBAL INTERNET TERMINALS</div>
-            
-            <div class="station-badge">
-                <div class="line"></div>
-                <span class="station-num">01</span>
-            </div>
-            <div style="font-size:0.7rem; color:#3a4a6a; letter-spacing:1px; font-weight:600; margin-left:5px;">FIRST STATION</div>
-            
-            <div class="version-info">
-                VERSION<br>
-                V1.0.0<br>
-                2026-11-10 13:00:51
-            </div>
+            <div class="station-badge"><div class="line"></div><span class="station-num">01</span></div>
+            <div style="font-size:0.7rem; color:#3a4a6a; font-weight:600; margin-left:5px;">FIRST STATION</div>
+            <div class="version-info">VERSION<br>V1.0.0<br>2026-11-10 13:00:51</div>
         </div>
 
-        <!-- 大 LOGO 区域 -->
+        <!-- 一比一精准还原的 HAAVK 矢量标志 -->
         <div class="logo-large">
+            <!-- 1. 上方几何图形标志 -->
             <svg class="logo-icon" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <!-- 左侧菱形 -->
-                <path d="M 90 50 L 40 110 L 90 170 L 90 130 L 70 110 L 90 90 Z" fill="#2F6BFF"/>
-                <!-- 中间垂直主干 -->
-                <path d="M 105 15 L 130 50 L 130 100 L 105 115 L 105 70 L 90 55 L 105 15 Z" fill="#2F6BFF"/>
-                <!-- 右侧三角 -->
-                <path d="M 115 70 L 165 110 L 115 150 Z" fill="#2F6BFF"/>
-                <!-- 底部尖刺 -->
-                <path d="M 105 125 L 125 145 L 105 185 L 85 155 L 105 125 Z" fill="#2F6BFF"/>
+                <g fill="#2F6BFF">
+                    <!-- 左侧三角形 -->
+                    <path d="M 85 50 L 15 120 L 85 190 L 85 140 L 45 120 L 85 75 Z" />
+                    <!-- 中间主柱体 (带右下角斜切) -->
+                    <path d="M 100 10 L 125 35 L 125 115 L 105 135 L 105 60 L 100 55 L 100 10 Z" />
+                    <!-- 中间下方倒三角 (顶部斜切) -->
+                    <path d="M 90 155 L 110 135 L 130 155 L 110 195 Z" />
+                    <!-- 右侧大三角 -->
+                    <path d="M 115 75 L 185 120 L 115 175 L 115 135 L 145 120 L 115 90 Z" />
+                </g>
             </svg>
 
+            <!-- 2. 下方 HAAVK 工业切割文字 -->
             <svg class="logo-text-svg" viewBox="0 0 300 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M 10 15 L 10 45 L 25 45 L 25 33 L 35 33 L 35 45 L 50 45 L 50 15 L 35 15 L 35 25 L 25 25 L 25 15 Z" fill="#2F6BFF"/>
-                <path d="M 60 45 L 75 15 L 90 15 L 105 45 L 90 45 L 87 37 L 78 37 L 75 45 Z M 83.5 28 L 81 28 L 82.5 22 Z" fill="#2F6BFF"/>
-                <path d="M 115 45 L 130 15 L 145 15 L 160 45 L 145 45 L 142 37 L 133 37 L 130 45 Z M 138.5 28 L 136 28 L 137.5 22 Z" fill="#2F6BFF"/>
-                <path d="M 170 15 L 185 45 L 200 45 L 215 15 L 198 15 L 192 32 L 186 15 Z" fill="#2F6BFF"/>
-                <path d="M 225 15 L 225 45 L 240 45 L 240 35 L 255 45 L 275 45 L 250 28 L 270 15 L 252 15 L 240 24 L 240 15 Z" fill="#2F6BFF"/>
+                <g fill="#2F6BFF">
+                    <!-- H (左侧竖线断开，右侧斜切) -->
+                    <path d="M 10 15 L 22 15 L 22 45 L 10 45 Z M 12 27 L 23 27 L 23 33 L 12 33 Z M 25 15 L 40 15 L 40 27 L 33 27 L 33 45 L 25 45 Z" />
+                    <!-- A (左) -->
+                    <path d="M 48 15 L 58 15 L 72 45 L 60 45 L 53 25 L 48 45 L 40 45 Z" />
+                    <!-- A (右) -->
+                    <path d="M 80 15 L 90 15 L 104 45 L 92 45 L 85 25 L 80 45 L 72 45 Z" />
+                    <!-- V -->
+                    <path d="M 112 15 L 125 45 L 138 45 L 151 15 L 139 15 L 131.5 35 L 124 15 Z" />
+                    <!-- K -->
+                    <path d="M 160 15 L 172 15 L 172 26 L 187 15 L 202 15 L 183 30 L 203 45 L 188 45 L 172 33 L 172 45 L 160 45 Z" />
+                </g>
             </svg>
         </div>
     </div>
 
-    <!-- 右侧表单区域容器 -->
+    <!-- 右侧表单区域 -->
     <div class="form-wrapper">
-        
-        <!-- ================= 登录表单 ================= -->
+        <!-- 登录表单 -->
         <div id="loginForm" class="form-card">
             <h1>哈夫克全域互联终端</h1>
             <div class="subhead">HAAVK UNIVERSAL TERMINAL · 员工接入</div>
-
-            <form action="#" method="post" onsubmit="event.preventDefault(); alert('演示界面 — 接入职业生涯 (模拟成功)');">
+            <!-- 仅作UI演示，阻止默认提交 -->
+            <form onsubmit="event.preventDefault(); showToast('演示界面：尝试接入系统', 'success');">
                 <div class="form-group">
                     <label>员工账号</label>
-                    <input type="text" placeholder="请输入账号" autocomplete="off" required>
+                    <input type="text" placeholder="请输入账号" required>
                 </div>
-
                 <div class="form-group">
                     <label>密码</label>
-                    <input type="password" placeholder="请输入接入密码" autocomplete="off" required>
+                    <input type="password" placeholder="请输入接入密码" required>
                 </div>
-
                 <button type="submit" class="submit-btn">接入职业生涯</button>
             </form>
-
-            <div class="action-link">
-                还没有账号？<a onclick="toggleView('register')">办理员工入职登记 →</a>
-            </div>
+            <div class="action-link">还没有账号？<a onclick="toggleView('register')">办理员工入职登记 →</a></div>
         </div>
 
-        <!-- ================= 入职登记表单 ================= -->
+        <!-- 入职登记表单 -->
         <div id="registerForm" class="form-card hidden">
             <h1>哈夫克全域互联终端</h1>
             <div class="subhead">HAAVK UNIVERSAL TERMINAL · 员工接入</div>
-
-            <form action="#" method="post" onsubmit="event.preventDefault(); alert('演示界面 — 提交入职登记 (模拟成功)');">
+            <!-- 仅作UI演示，阻止默认提交 -->
+            <form onsubmit="event.preventDefault(); showToast('演示界面：提交入职登记成功', 'success');">
                 <div class="form-group">
                     <label>员工账号（英文 / 数字）</label>
-                    <input type="text" placeholder="请输入账号" autocomplete="off" required>
+                    <input type="text" placeholder="请输入账号" required>
                 </div>
-
                 <div class="form-group">
                     <label>显示名称</label>
-                    <input type="text" placeholder="请输入显示名称" autocomplete="off" required>
+                    <input type="text" placeholder="请输入显示名称" required>
                 </div>
-
                 <div class="form-group">
                     <label>所属部门</label>
-                    <!-- 自定义下拉框组件 -->
                     <div class="custom-select-container" id="deptSelect">
-                        <div class="custom-select-trigger">
-                            <span id="deptLabel">请选择所属部门</span>
-                        </div>
+                        <div class="custom-select-trigger"><span id="deptLabel">安全防卫部</span></div>
                         <div class="custom-select-options">
                             <div class="custom-select-option" data-value="地方关系分局">地方关系分局</div>
                             <div class="custom-select-option" data-value="人力资源中心">人力资源中心</div>
@@ -468,114 +177,80 @@
                             <div class="custom-select-option" data-value="非必要人员滞留部">非必要人员滞留部</div>
                             <div class="custom-select-option selected" data-value="安全防卫部">安全防卫部</div>
                         </div>
-                        <!-- 隐藏的 input 用于表单提交真实数据 -->
-                        <input type="hidden" name="department" id="deptInput" value="安全防卫部">
+                        <input type="hidden" id="reg-dept" value="安全防卫部">
                     </div>
                 </div>
-
                 <div class="form-group">
                     <label>接入密码</label>
-                    <input type="password" placeholder="至少 6 位" minlength="6" autocomplete="off" required>
+                    <input type="password" placeholder="至少 6 位" minlength="6" required>
                 </div>
-
                 <div class="form-group">
                     <label>确认密码</label>
-                    <input type="password" placeholder="再次输入密码" minlength="6" autocomplete="off" required>
+                    <input type="password" placeholder="再次输入密码" minlength="6" required>
                 </div>
-
                 <button type="submit" class="submit-btn">提交入职登记</button>
             </form>
-
-            <div class="action-link">
-                <a onclick="toggleView('login')">← 返回接入登录</a>
-            </div>
+            <div class="action-link"><a onclick="toggleView('login')">← 返回接入登录</a></div>
         </div>
-
     </div>
 </div>
 
 <script>
-    /**
-     * 切换登录/注册视图
-     */
-    function toggleView(viewType) {
-        const loginForm = document.getElementById('loginForm');
-        const registerForm = document.getElementById('registerForm');
-        
-        // 每次切换时，关闭下拉框
-        document.getElementById('deptSelect').classList.remove('open');
+    // 提示框函数
+    function showToast(message, type = 'error') {
+        const container = document.getElementById('toastContainer');
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        toast.textContent = message;
+        container.appendChild(toast);
+        setTimeout(() => {
+            toast.style.animation = 'fadeOut 0.3s ease forwards';
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    }
 
+    // 视图切换
+    function toggleView(viewType) {
+        document.getElementById('deptSelect').classList.remove('open');
         if (viewType === 'register') {
-            loginForm.classList.add('hidden');
-            registerForm.classList.remove('hidden');
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('registerForm').classList.remove('hidden');
         } else {
-            registerForm.classList.add('hidden');
-            loginForm.classList.remove('hidden');
+            document.getElementById('registerForm').classList.add('hidden');
+            document.getElementById('loginForm').classList.remove('hidden');
         }
     }
 
-    /**
-     * 自定义下拉框逻辑
-     */
+    // 下拉框逻辑
     const deptSelect = document.getElementById('deptSelect');
     const deptLabel = document.getElementById('deptLabel');
-    const deptInput = document.getElementById('deptInput');
-    const options = document.querySelectorAll('.custom-select-option');
-
-    // 默认选中的文字（根据截图，默认选中“安全防卫部”）
-    deptLabel.textContent = "安全防卫部";
-
-    // 1. 点击触发器，切换弹出层展开/收起
+    const deptInput = document.getElementById('reg-dept');
+    
     deptSelect.querySelector('.custom-select-trigger').addEventListener('click', function(e) {
-        e.stopPropagation(); // 阻止事件冒泡到 document
+        e.stopPropagation();
         deptSelect.classList.toggle('open');
     });
-
-    // 2. 点击选项，更新选中值并关闭弹出层
-    options.forEach(option => {
-        option.addEventListener('click', function(e) {
-            // 获取选中的文本和值
-            const value = this.getAttribute('data-value');
-            const text = this.textContent;
-
-            // 更新界面显示
-            deptLabel.textContent = text;
-            deptInput.value = value;
-
-            // 更新选中样式
-            options.forEach(opt => opt.classList.remove('selected'));
+    
+    document.querySelectorAll('.custom-select-option').forEach(option => {
+        option.addEventListener('click', function() {
+            deptLabel.textContent = this.textContent;
+            deptInput.value = this.getAttribute('data-value');
+            document.querySelectorAll('.custom-select-option').forEach(opt => opt.classList.remove('selected'));
             this.classList.add('selected');
-
-            // 关闭下拉框
             deptSelect.classList.remove('open');
         });
     });
-
-    // 3. 点击页面空白处，关闭弹出层
+    
     document.addEventListener('click', function(e) {
-        if (!deptSelect.contains(e.target)) {
-            deptSelect.classList.remove('open');
-        }
+        if (!deptSelect.contains(e.target)) deptSelect.classList.remove('open');
     });
 
-    // 动态更新终端时间
-    function updateTime() {
-        const timeEl = document.querySelector('.version-info');
-        if(timeEl) {
-            const now = new Date();
-            const year = now.getFullYear();
-            const month = String(now.getMonth() + 1).padStart(2, '0');
-            const day = String(now.getDate()).padStart(2, '0');
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
-            timeEl.innerHTML = `VERSION<br>V1.0.0<br>${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-        }
-    }
-    window.onload = function() {
-        updateTime();
-        setInterval(updateTime, 1000);
-    };
+    // 动态更新时间
+    setInterval(() => {
+        const now = new Date();
+        const timeStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
+        document.querySelector('.version-info').innerHTML = `VERSION<br>V1.0.0<br>${timeStr}`;
+    }, 1000);
 </script>
 </body>
 </html>
