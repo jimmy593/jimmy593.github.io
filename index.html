@@ -27,8 +27,14 @@
         
         /* 标志区域尺寸 */
         .logo-large { width: 340px; display: flex; flex-direction: column; align-items: center; margin-top: 1.5rem; }
-        .logo-icon { width: 250px; height: 250px; margin-bottom: 0.5rem; }
-        .logo-text-svg { width: 250px; margin-top: 0px; }
+        
+        /* 给图片设置好尺寸，保证排版不乱 */
+        .logo-img { 
+            width: 250px; 
+            height: auto; 
+            margin-bottom: 0.5rem;
+            object-fit: contain; /* 保证图片比例不变形 */
+        }
 
         /* ---- 右侧表单样式 ---- */
         .form-wrapper { flex: 0 0 440px; position: relative; }
@@ -51,7 +57,7 @@
         .custom-select-options { position: absolute; top: calc(100% + 4px); left: 0; right: 0; background: #ffffff; border: 1px solid #d0d8e8; border-radius: 3px; box-shadow: 0 10px 25px rgba(0, 20, 60, 0.1); z-index: 100; max-height: 250px; overflow-y: auto; opacity: 0; visibility: hidden; transform: translateY(-5px); transition: all 0.2s; }
         .custom-select-container.open .custom-select-options { opacity: 1; visibility: visible; transform: translateY(0); }
         .custom-select-option { padding: 0.8rem 1rem; font-size: 0.9rem; color: #1e2b47; cursor: pointer; transition: background 0.15s, color 0.15s; }
-        .custom-select-option:hover { background-color: #6b7280; color: #ffffff; } /* 鼠标拂过变深色 */
+        .custom-select-option:hover { background-color: #6b7280; color: #ffffff; } 
         .custom-select-option.selected { background-color: #f0f4fa; color: #2f6bff; font-weight: 500; }
         .custom-select-option.selected:hover { background-color: #6b7280; color: #ffffff; }
 
@@ -61,12 +67,17 @@
         .action-link a { color: #2f6bff; text-decoration: none; cursor: pointer; }
         .action-link a:hover { text-decoration: underline; }
 
-        /* ---- Toast 提示框 ---- */
-        .toast-container { position: fixed; top: 30px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
-        .toast { padding: 12px 24px; border-radius: 4px; font-size: 0.9rem; font-weight: 500; color: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.15); animation: slideDown 0.3s ease forwards; }
-        .toast.success { background-color: #2f6bff; }
-        @keyframes slideDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+        /* ---- 底部红字提示样式 ---- */
+        .error-msg { 
+            color: #ff4d4f; 
+            font-size: 0.8rem; 
+            margin-top: 1rem; 
+            text-align: center; 
+            min-height: 18px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        .error-msg.show { opacity: 1; }
 
         @media (max-width: 980px) {
             .main-container { flex-direction: column; gap: 3rem; padding: 2rem 1rem; }
@@ -77,8 +88,6 @@
     </style>
 </head>
 <body>
-
-<div class="toast-container" id="toastContainer"></div>
 
 <div class="main-container">
     <!-- 左侧品牌区域 -->
@@ -91,37 +100,18 @@
             <div class="version-info">VERSION<br>V1.0.0<br>2026-11-10 13:00:51</div>
         </div>
 
-        <!-- 一比一精准还原的 HAAVK 矢量标志 -->
+        <!-- ======== 标志区域 (已替换为图片格式) ======== -->
         <div class="logo-large">
-            <!-- 1. 上方几何图形标志 -->
-            <svg class="logo-icon" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g fill="#2F6BFF">
-                    <!-- 左侧三角形 -->
-                    <path d="M 85 50 L 15 120 L 85 190 L 85 140 L 45 120 L 85 75 Z" />
-                    <!-- 中间主柱体 (带右下角斜切) -->
-                    <path d="M 100 10 L 125 35 L 125 115 L 105 135 L 105 60 L 100 55 L 100 10 Z" />
-                    <!-- 中间下方倒三角 (顶部斜切) -->
-                    <path d="M 90 155 L 110 135 L 130 155 L 110 195 Z" />
-                    <!-- 右侧大三角 -->
-                    <path d="M 115 75 L 185 120 L 115 175 L 115 135 L 145 120 L 115 90 Z" />
-                </g>
-            </svg>
-
-            <!-- 2. 下方 HAAVK 工业切割文字 -->
-            <svg class="logo-text-svg" viewBox="0 0 300 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g fill="#2F6BFF">
-                    <!-- H (左侧竖线断开，右侧斜切) -->
-                    <path d="M 10 15 L 22 15 L 22 45 L 10 45 Z M 12 27 L 23 27 L 23 33 L 12 33 Z M 25 15 L 40 15 L 40 27 L 33 27 L 33 45 L 25 45 Z" />
-                    <!-- A (左) -->
-                    <path d="M 48 15 L 58 15 L 72 45 L 60 45 L 53 25 L 48 45 L 40 45 Z" />
-                    <!-- A (右) -->
-                    <path d="M 80 15 L 90 15 L 104 45 L 92 45 L 85 25 L 80 45 L 72 45 Z" />
-                    <!-- V -->
-                    <path d="M 112 15 L 125 45 L 138 45 L 151 15 L 139 15 L 131.5 35 L 124 15 Z" />
-                    <!-- K -->
-                    <path d="M 160 15 L 172 15 L 172 26 L 187 15 L 202 15 L 183 30 L 203 45 L 188 45 L 172 33 L 172 45 L 160 45 Z" />
-                </g>
-            </svg>
+            <!-- 
+                ⚠️ 提示：如果你想换成自己的图片，只需修改 src 属性。
+                例如：src="./haavk-logo.png" 
+                目前的 src 是一张内置的 SVG 图像作为占位。
+            -->
+            <img 
+                src="" 
+                alt="哈夫克标志" 
+                class="logo-img"
+            >
         </div>
     </div>
 
@@ -131,18 +121,20 @@
         <div id="loginForm" class="form-card">
             <h1>哈夫克全域互联终端</h1>
             <div class="subhead">HAAVK UNIVERSAL TERMINAL · 员工接入</div>
-            <!-- 仅作UI演示，阻止默认提交 -->
-            <form onsubmit="event.preventDefault(); showToast('演示界面：尝试接入系统', 'success');">
+            <form id="loginFormEl">
                 <div class="form-group">
                     <label>员工账号</label>
-                    <input type="text" placeholder="请输入账号" required>
+                    <input type="text" id="login-account" placeholder="请输入账号">
                 </div>
                 <div class="form-group">
                     <label>密码</label>
-                    <input type="password" placeholder="请输入接入密码" required>
+                    <input type="password" id="login-password" placeholder="请输入接入密码">
                 </div>
                 <button type="submit" class="submit-btn">接入职业生涯</button>
+                
+                <div class="error-msg" id="loginError"></div>
             </form>
+            
             <div class="action-link">还没有账号？<a onclick="toggleView('register')">办理员工入职登记 →</a></div>
         </div>
 
@@ -150,15 +142,14 @@
         <div id="registerForm" class="form-card hidden">
             <h1>哈夫克全域互联终端</h1>
             <div class="subhead">HAAVK UNIVERSAL TERMINAL · 员工接入</div>
-            <!-- 仅作UI演示，阻止默认提交 -->
-            <form onsubmit="event.preventDefault(); showToast('演示界面：提交入职登记成功', 'success');">
+            <form id="registerFormEl">
                 <div class="form-group">
                     <label>员工账号（英文 / 数字）</label>
-                    <input type="text" placeholder="请输入账号" required>
+                    <input type="text" id="reg-account" placeholder="请输入账号">
                 </div>
                 <div class="form-group">
                     <label>显示名称</label>
-                    <input type="text" placeholder="请输入显示名称" required>
+                    <input type="text" id="reg-name" placeholder="请输入显示名称">
                 </div>
                 <div class="form-group">
                     <label>所属部门</label>
@@ -177,41 +168,33 @@
                             <div class="custom-select-option" data-value="非必要人员滞留部">非必要人员滞留部</div>
                             <div class="custom-select-option selected" data-value="安全防卫部">安全防卫部</div>
                         </div>
-                        <input type="hidden" id="reg-dept" value="安全防卫部">
                     </div>
                 </div>
                 <div class="form-group">
                     <label>接入密码</label>
-                    <input type="password" placeholder="至少 6 位" minlength="6" required>
+                    <input type="password" id="reg-password" placeholder="至少 6 位">
                 </div>
                 <div class="form-group">
                     <label>确认密码</label>
-                    <input type="password" placeholder="再次输入密码" minlength="6" required>
+                    <input type="password" id="reg-confirm" placeholder="再次输入密码">
                 </div>
                 <button type="submit" class="submit-btn">提交入职登记</button>
+                
+                <div class="error-msg" id="regError"></div>
             </form>
+            
             <div class="action-link"><a onclick="toggleView('login')">← 返回接入登录</a></div>
         </div>
     </div>
 </div>
 
 <script>
-    // 提示框函数
-    function showToast(message, type = 'error') {
-        const container = document.getElementById('toastContainer');
-        const toast = document.createElement('div');
-        toast.className = `toast ${type}`;
-        toast.textContent = message;
-        container.appendChild(toast);
-        setTimeout(() => {
-            toast.style.animation = 'fadeOut 0.3s ease forwards';
-            setTimeout(() => toast.remove(), 300);
-        }, 3000);
-    }
-
     // 视图切换
     function toggleView(viewType) {
         document.getElementById('deptSelect').classList.remove('open');
+        document.getElementById('loginError').classList.remove('show');
+        document.getElementById('regError').classList.remove('show');
+
         if (viewType === 'register') {
             document.getElementById('loginForm').classList.add('hidden');
             document.getElementById('registerForm').classList.remove('hidden');
@@ -224,7 +207,6 @@
     // 下拉框逻辑
     const deptSelect = document.getElementById('deptSelect');
     const deptLabel = document.getElementById('deptLabel');
-    const deptInput = document.getElementById('reg-dept');
     
     deptSelect.querySelector('.custom-select-trigger').addEventListener('click', function(e) {
         e.stopPropagation();
@@ -234,7 +216,6 @@
     document.querySelectorAll('.custom-select-option').forEach(option => {
         option.addEventListener('click', function() {
             deptLabel.textContent = this.textContent;
-            deptInput.value = this.getAttribute('data-value');
             document.querySelectorAll('.custom-select-option').forEach(opt => opt.classList.remove('selected'));
             this.classList.add('selected');
             deptSelect.classList.remove('open');
@@ -243,6 +224,54 @@
     
     document.addEventListener('click', function(e) {
         if (!deptSelect.contains(e.target)) deptSelect.classList.remove('open');
+    });
+
+    // 显示底部红字提示
+    function showError(elementId, message, isSuccess = false) {
+        const errorEl = document.getElementById(elementId);
+        errorEl.textContent = message;
+        errorEl.style.color = isSuccess ? '#52c41a' : '#ff4d4f'; // 成功绿，失败红
+        errorEl.classList.add('show');
+    }
+
+    // 1. 登录校验
+    document.getElementById('loginFormEl').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const account = document.getElementById('login-account').value.trim();
+        const password = document.getElementById('login-password').value.trim();
+        const errorId = 'loginError';
+
+        document.getElementById(errorId).classList.remove('show');
+
+        if (!account) return showError(errorId, '请输入员工账号');
+        if (!password) return showError(errorId, '请输入接入密码');
+
+        showError(errorId, '身份验证中... (演示界面，无真实后台)', true);
+    });
+
+    // 2. 入职登记校验
+    document.getElementById('registerFormEl').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const account = document.getElementById('reg-account').value.trim();
+        const name = document.getElementById('reg-name').value.trim();
+        const password = document.getElementById('reg-password').value;
+        const confirmPwd = document.getElementById('reg-confirm').value;
+        const errorId = 'regError';
+
+        document.getElementById(errorId).classList.remove('show');
+
+        if (!account) return showError(errorId, '请输入员工账号');
+        if (!name) return showError(errorId, '请输入显示名称');
+        if (password.length < 6) return showError(errorId, '接入密码至少需要 6 位');
+        if (password !== confirmPwd) return showError(errorId, '两次输入的密码不一致');
+
+        showError(errorId, '入职登记成功！(演示界面，无真实后台)', true);
+        
+        this.reset();
+        setTimeout(() => {
+            document.getElementById(errorId).classList.remove('show');
+            toggleView('login');
+        }, 2000);
     });
 
     // 动态更新时间
